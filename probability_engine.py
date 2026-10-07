@@ -56,8 +56,10 @@ class ProbabilityEngine:
         # Split into words (handles repeated spaces automatically)
         words = text.split()
         
-        # Remove common stopwords, keep meaningful words
-        cleaned_words = [w for w in words if w not in self.stopwords]
+        # By default, we previously removed common stopwords.
+        # However, to ensure the full sentence appears on the X-axis as requested,
+        # we will keep all words.
+        cleaned_words = words # [w for w in words if w not in self.stopwords]
         
         return cleaned_words
 
@@ -235,7 +237,7 @@ class ProbabilityEngine:
             "vocabulary_size": len(self.vocabulary)
         }
 
-    def generate_charts(self, output_dir="static/charts", current_words=None):
+    def generate_charts(self, output_dir="static/charts", current_words=None, current_email=None):
         """Generates charts for the dashboard using matplotlib."""
         # Use absolute paths for safety
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -263,7 +265,12 @@ class ProbabilityEngine:
         if current_words:
             # Use unique words from the current email (up to 10)
             words = list(dict.fromkeys(current_words))[:10]
-            chart_title = 'Conditional Probabilities of Email Words'
+            if current_email:
+                # truncate to keep chart title reasonable
+                display_email = current_email if len(current_email) <= 35 else current_email[:32] + "..."
+                chart_title = f'Conditional Probabilities: "{display_email}"'
+            else:
+                chart_title = 'Conditional Probabilities of Email Words'
         else:
             # Find the 10 most frequent words overall to compare their conditional probabilities
             word_freqs = {w: self.spam_word_counts.get(w, 0) + self.not_spam_word_counts.get(w, 0) for w in self.vocabulary}

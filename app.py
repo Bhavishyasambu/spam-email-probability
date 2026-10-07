@@ -26,6 +26,8 @@ engine.generate_charts(output_dir=charts_dir)
 def index():
     """Render the main frontend dashboard with current statistics."""
     stats = engine.get_statistics()
+    # Regenerate global charts so it doesn't show the last analyzed email
+    engine.generate_charts(output_dir=charts_dir)
     timestamp = int(time.time())
     return render_template("index.html", stats=stats, timestamp=timestamp)
 
@@ -53,7 +55,11 @@ def analyze():
         
     # Retrain the engine with the new data and update charts
     engine.load_and_train()
-    engine.generate_charts(output_dir=charts_dir, current_words=result.get("detected_words"))
+    engine.generate_charts(
+        output_dir=charts_dir, 
+        current_words=result.get("detected_words"),
+        current_email=email_text
+    )
         
     # Get current statistics and timestamp for UI
     stats = engine.get_statistics()
