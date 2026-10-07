@@ -1,0 +1,91 @@
+email,label
+"Congratulations! You have won a free prize. Claim your reward now.",spam
+"Please submit your assignment before the deadline tomorrow.",not_spam
+"Urgent: click here to claim your exclusive bonus cash today.",spam
+"Hi, let's discuss the project during our meeting tomorrow.",not_spam
+"You are the lucky winner of a $1000 cash prize. Click here.",spam
+"Don't forget to submit the weekly report by Friday.",not_spam
+"Get your free money today, limited time offer just click now.",spam
+"The class will start at 10 AM in room 101.",not_spam
+"Limited time offer! Claim your free gift and bonus immediately.",spam
+"Thanks for the update on the software assignment.",not_spam
+"Congratulations! You have been selected for a free exclusive offer.",spam
+"Can we reschedule our meeting to next week?",not_spam
+"Win a free trip to Bahamas, click here to claim your reward.",spam
+"Please review the attached document and let me know your thoughts.",not_spam
+"Urgent action required: Your account needs verification, click here.",spam
+"Happy birthday! Let's celebrate this weekend at the restaurant.",not_spam
+"You won a $500 gift card, click the link to redeem it now.",spam
+"Reminder: Project deadline is tomorrow, please complete all tasks.",not_spam
+"Earn extra money fast working from home, sign up today.",spam
+"Could you send me the latest syllabus for the probability course?",not_spam
+"Exclusive bonus offer just for you, don't miss out on free cash.",spam
+"Let's grab coffee after class tomorrow.",not_spam
+"Claim your free trial now and win amazing prizes.",spam
+"The notes for today's lecture are attached to this email.",not_spam
+"Congratulations, you are our 100th visitor! Claim your free prize.",spam
+"I will be late for the meeting today, start without me.",not_spam
+"Urgent action required to keep your bank account active.",spam
+"Please find the dataset for the project attached.",not_spam
+"Get a free bonus when you sign up for our premium plan.",spam
+"Are we still on for lunch tomorrow?",not_spam
+"You have won a free iPhone, click here to provide your details.",spam
+"Don't forget to study for the probability and statistics exam.",not_spam
+"Special reward for our best customers, claim your cash back.",spam
+"Here is the code for the Flask application we discussed.",not_spam
+"Make fast money online, click here to learn how to get rich.",spam
+"The professor extended the deadline for the final project.",not_spam
+"Congratulations on your new job offer!",not_spam
+"You are a winner! Claim your money now before it expires.",spam
+"Please read the instructions carefully before starting the exam.",not_spam
+"Huge discount offer! Buy now and get a free gift.",spam
+"What time is the group study session today?",not_spam
+"Urgent: Update your payment details to avoid suspension.",spam
+"I have submitted the assignment on the university portal.",not_spam
+"Free gift inside, open this email now to claim!",spam
+"Thanks for helping me with the math problem yesterday.",not_spam
+"Claim your exclusive cash reward today, no strings attached.",spam
+"See you at the library tomorrow for the study group.",not_spam
+"Congratulations, you won a free ticket to the concert!",spam
+"Please check your email for the Zoom meeting link.",not_spam
+"Click here for your free bonus money, 100% guaranteed.",spam
+"Did you finish the homework for the physics class?",not_spam
+"Limited offer! Claim your free prize today.",spam
+"I will send the progress report by evening.",not_spam
+"Urgent: Claim your prize before it expires at midnight.",spam
+"Let me know if you need help with the Python project.",not_spam
+"You won! Click the link below to claim your reward.",spam
+"The presentation went well, thanks for your help!",not_spam
+"Free money! Just click the link and sign up.",spam
+"Could you please review my code for the probability engine?",not_spam
+"Exclusive bonus offer for you, claim cash now.",spam
+"I will be on leave tomorrow, please cover my shift.",not_spam
+"Congratulations, your loan is approved! Click here for cash.",spam
+"Have a great weekend, see you on Monday!",not_spam
+"Win cash easily, click here to enter the lottery.",spam
+"The meeting minutes have been uploaded to the shared drive.",not_spam
+"Free investment advice, click here to double your money.",spam
+"Your feedback is important to us, please fill the survey.",not_spam
+"Urgent: Claim your inheritance money now.",spam
+"Are you available for a quick call this afternoon?",not_spam
+"Congratulations on winning the sweepstakes! Claim prize.",spam
+"Please find the invoice for your recent purchase attached.",not_spam
+"Click here to get your free credit score.",spam
+"The package has been delivered to your front door.",not_spam
+"Limited time: Get a free laptop when you sign up.",spam
+"Please confirm your attendance for the workshop.",not_spam
+your exam is tommorow,not_spam
+free pizza,spam
+" tomorrow is exam   ",not_spam
+" tomorrow  exam is cancelled  ",not_spam
+free pizza,spam
+free piza,spam
+"tommorow is exam ",not_spam
+tommorow is exam,not_spam
+tommorow is exam,not_spam
+Exams are coming soon,not_spam
+"exams are coming soon ",not_spam
+you won free pizza,spam
+exams starts tommorow ,not_spam
+exams starts tommorow ,not_spam
+"Your exam start today ",not_spam

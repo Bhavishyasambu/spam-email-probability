@@ -1,0 +1,355 @@
+/* --- CSS VARIABLES --- */
+:root {
+    --primary: #4361ee;
+    --primary-hover: #3a0ca3;
+    --spam: #ef233c;
+    --not-spam: #2ec4b6;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-main: #2b2d42;
+    --text-muted: #6c757d;
+    --border-color: #e9ecef;
+    --shadow: 0 10px 30px rgba(0,0,0,0.05);
+    --radius: 12px;
+}
+
+/* --- BASE STYLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* --- HEADER --- */
+.project-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: white;
+    padding: 3rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.header-container h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* --- LAYOUT --- */
+.dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.section-desc {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* --- INPUT SECTION --- */
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    resize: vertical;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* --- UTILITIES --- */
+.hidden {
+    display: none !important;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 1rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.error-msg {
+    background-color: #ffe5e5;
+    color: #d62828;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* --- RESULTS SECTION --- */
+.classification-card {
+    text-align: center;
+}
+
+.classification-badge {
+    display: inline-block;
+    padding: 1rem 3rem;
+    font-size: 2rem;
+    font-weight: 800;
+    border-radius: 50px;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.badge-spam { background-color: var(--spam); }
+.badge-not-spam { background-color: var(--not-spam); }
+
+/* --- PROBABILITY BARS --- */
+.probability-bars {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.prob-group { margin-bottom: 1.5rem; }
+.prob-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.bar-container {
+    background-color: var(--border-color);
+    border-radius: 20px;
+    height: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spam-bar { background-color: var(--spam); width: 0%; }
+.not-spam-bar { background-color: var(--not-spam); width: 0%; }
+
+.bar-text {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}
+
+/* --- DETECTED WORDS --- */
+.word-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    background-color: #e2eafc;
+    color: var(--primary-hover);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid #ccdbfd;
+}
+
+/* --- MATH DISPLAY --- */
+.math-box {
+    background-color: #f1f3f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 5px solid var(--primary);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+}
+
+.math-box h3 {
+    font-family: 'Inter', sans-serif;
+    color: var(--primary-hover);
+    margin-bottom: 1rem;
+}
+
+.formula, .substitution {
+    margin-bottom: 1rem;
+}
+
+.eq {
+    display: flex;
+    align-items: center;
+}
+
+.fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+
+.top { border-bottom: 2px solid #333; padding: 0 5px 2px 5px; }
+.bottom { padding: 2px 5px 0 5px; }
+
+.final-calc {
+    font-size: 1.3rem;
+    margin: 1.5rem 0;
+    color: var(--text-main);
+}
+
+.law-total-prob {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+/* --- PROBABILITY TABLE --- */
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+tr:hover { background-color: #f1f3f5; }
+.note { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+
+/* --- INFO GRID --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.stat-box {
+    text-align: center;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 30%;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.prior-probs p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.chart-container img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .fraction { font-size: 0.9rem; }
+    .classification-badge { font-size: 1.5rem; }
+}

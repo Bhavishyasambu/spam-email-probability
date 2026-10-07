@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Probability Analysis</title>
+    <!-- Google Fonts for Modern Academic Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .flash-messages { margin-bottom: 20px; }
+        .flash-message { padding: 15px; border-radius: 8px; margin-bottom: 10px; font-weight: 600; }
+        .flash-success { background-color: #e6fffa; color: var(--not-spam); }
+        .flash-error { background-color: #ffe5e5; color: var(--spam); }
+        
+        .score-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        
+        .info-message {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="project-header">
+        <div class="header-container">
+            <h1>PROBABILITY-BASED SPAM EMAIL DETECTION</h1>
+            <p class="subtitle">Analyze an unknown email using conditional probability, total probability, and Bayes' theorem.</p>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages">
+              {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Static Dataset Info & Charts -->
+        <div class="info-grid">
+            <section class="card stats-card">
+                <h2>DATASET STATISTICS</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-value" id="statTotal">{{ stats.total_emails }}</span>
+                        <span class="stat-label">Total Emails</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="statSpam">{{ stats.spam_emails }}</span>
+                        <span class="stat-label">Spam Emails</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="statNotSpam">{{ stats.not_spam_emails }}</span>
+                        <span class="stat-label">Not Spam Emails</span>
+                    </div>
+                </div>
+                <div class="prior-probs" style="margin-top:20px; font-size:1.1rem; color: #555;">
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;"><em>Dataset Prior Probabilities:</em></p>
+                    <p><strong>Dataset Spam %:</strong> <span>{{ "%.2f"|format(stats.spam_percentage) }}%</span></p>
+                    <p><strong>Dataset Not Spam %:</strong> <span>{{ "%.2f"|format(stats.not_spam_percentage) }}%</span></p>
+                </div>
+            </section>
+
+            <section class="card charts-card">
+                <h2>Probability Distributions</h2>
+                <div class="chart-container" style="display:flex; justify-content:space-between;">
+                    <img src="/static/charts/distribution.png?t={{ timestamp }}" style="max-width:48%;" alt="Prior Probability Distribution" onerror="this.style.display='none'">
+                    <img src="/static/charts/word_conditionals.png?t={{ timestamp }}" style="max-width:48%;" alt="Word Conditional Probabilities" onerror="this.style.display='none'">
+                </div>
+            </section>
+        </div>
+
+        <!-- Input Section -->
+        <section class="card input-section" style="margin-top:20px;">
+            <h2><span class="icon">📝</span> ANALYZE EMAIL</h2>
+            <p class="section-desc">Enter an unknown email below to predict its classification using our historical dataset.</p>
+            <form action="/analyze" method="POST">
+                <textarea name="email" id="emailInput" placeholder="Enter your email message here... (e.g., 'Congratulations! You won a free prize!')">{{ current_email if current_email else '' }}</textarea>
+                <button type="submit" id="analyzeBtn">ANALYZE EMAIL</button>
+            </form>
+        </section>
+
+        {% if analysis %}
+        <!-- Results Section -->
+        <div id="resultsContainer" class="results-container">
+            
+            {% if analysis.message %}
+            <div class="info-message">
+                {{ analysis.message }}
+            </div>
+            {% endif %}
+
+            <!-- Detailed Probability Analysis -->
+            <section class="card table-card">
+                <h2>PROBABILITY ANALYSIS</h2>
+                <p class="section-desc">Detected words and their conditional probabilities based on Laplace smoothing.</p>
+                
+                <div class="word-tags" style="margin-bottom:20px;">
+                    <strong>Detected Words:</strong> 
+                    {% if analysis.detected_words %}
+                        {% for word in analysis.detected_words %}
+                            <span class="tag">{{ word }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
+                </div>
+
+                <div class="table-responsive">
+                    <table id="probabilityTable">
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>P(Word | Spam)</th>
+                                <th>P(Word | Not Spam)</th>
+                                <th>P(Word) <br><small>Total Prob</small></th>
+                                <th>P(Spam | Word) <br><small>Bayes' Theorem</small></th>
+                            </tr>
+                        </thead>
+                        <tbody id="probabilityTableBody">
+                            {% for item in analysis.probabilities %}
+                            <tr {% if item.p_spam_given_word > 0.5 %}style="background-color: rgba(239, 35, 60, 0.05);"{% endif %}>
+                                <td><strong>{{ item.word }}</strong></td>
+                                <td>{{ "%.2f"|format(item.p_word_given_spam * 100) }}%</td>
+                                <td>{{ "%.2f"|format(item.p_word_given_not_spam * 100) }}%</td>
+                                <td>{{ "%.2f"|format(item.p_word * 100) }}%</td>
+                                <td><strong>{{ "%.2f"|format(item.p_spam_given_word * 100) }}%</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Log scores hidden as requested -->
+            </section>
+
+            <!-- Bayes Theorem Explanation -->
+            {% if analysis.bayes_analysis and analysis.bayes_analysis.word %}
+            <section class="card bayes-card">
+                <h2>Bayes Calculation Example</h2>
+                <p class="section-desc">For the most significant word: <strong>'{{ analysis.bayes_analysis.word }}'</strong></p>
+                
+                <div class="math-box">
+                    <div class="formula">
+                        <p class="eq">P(Spam | Word) = <span class="fraction"><span class="top">P(Word | Spam) &times; P(Spam)</span><span class="bottom">P(Word)</span></span></p>
+                    </div>
+                    <div class="substitution" id="bayesSubstitution">
+                        {% set sub_parts = analysis.bayes_analysis.substitution.split(' / ') %}
+                        {% set top_part = sub_parts[0] | replace('= (', '(') %}
+                        {% set bot_part = sub_parts[1] %}
+                        <p class="eq">= <span class="fraction"><span class="top">{{ top_part }}</span><span class="bottom">{{ bot_part }}</span></span></p>
+                    </div>
+                    <div class="final-calc">
+                        <p id="bayesFinalResult">= {{ "%.4f"|format(analysis.bayes_analysis.result_decimal) }} = <strong>{{ "%.2f"|format(analysis.bayes_analysis.result_percentage) }}%</strong></p>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Final Classification -->
+            <section class="card classification-card">
+                <h2>FINAL RESULT</h2>
+                
+                <div class="probability-bars" style="margin-bottom: 20px;">
+                    <div class="prob-group">
+                        <label>Spam Probability: P(Spam | Email)</label>
+                        <div class="bar-container">
+                            <div class="bar spam-bar" style="width: {{ analysis.spam_probability }}%;"></div>
+                            <span class="bar-text">{{ "%.2f"|format(analysis.spam_probability) }}%</span>
+                        </div>
+                    </div>
+                    <div class="prob-group">
+                        <label>Not Spam Probability: P(Not Spam | Email)</label>
+                        <div class="bar-container">
+                            <div class="bar not-spam-bar" style="width: {{ analysis.not_spam_probability }}%;"></div>
+                            <span class="bar-text">{{ "%.2f"|format(analysis.not_spam_probability) }}%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-display">
+                    <h3>Prediction:</h3>
+                    {% if analysis.classification == 'SPAM' %}
+                    <div class="classification-badge badge-spam" style="font-size: 2rem;">SPAM</div>
+                    {% else %}
+                    <div class="classification-badge badge-not-spam" style="font-size: 2rem;">NOT SPAM</div>
+                    {% endif %}
+                </div>
+            </section>
+
+        </div>
+        {% endif %}
+        
+    </main>
+
+    <footer>
+        <p>College Project: Probability & Statistics Integration &copy; 2024</p>
+    </footer>
+
+</body>
+</html>
